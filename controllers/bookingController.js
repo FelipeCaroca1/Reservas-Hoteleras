@@ -22,7 +22,13 @@ exports.createBooking = (req, res) => {
 
 // Obtener todas las reservas
 exports.getAllBookings = (req, res) => {
-  res.json(bookings);
+ const queryHotel = req.query.hotel;
+
+ if (queryHotel) {
+    res.json( bookings.filter(booking => booking.hotel === queryHotel) );
+ } else {
+     res.json(bookings);
+}
 };
 
 // Obtener una reserva por ID
@@ -47,12 +53,20 @@ exports.updateBooking = (req, res) => {
   }
 
   // Actualizar la reserva
-  const { customerName, roomType, checkInDate, checkOutDate, totalAmount } = req.body;
-  booking.customerName = customerName || booking.customerName;
+  const { email,
+    hotel,
+    roomType,
+    checkInDate,
+    checkOutDate,
+    adults,
+    children } = req.body;
+  booking.email = email || booking.email;
+  booking.hotel = hotel || booking.hotel;
   booking.roomType = roomType || booking.roomType;
   booking.checkInDate = checkInDate || booking.checkInDate;
   booking.checkOutDate = checkOutDate || booking.checkOutDate;
-  booking.totalAmount = totalAmount || booking.totalAmount;
+  booking.adults = adults || booking.adults;
+  booking.children = children || booking.children;
 
   res.json(booking);
 };
