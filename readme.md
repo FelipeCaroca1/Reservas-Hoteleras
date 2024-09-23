@@ -9,3 +9,11 @@ Instalar los archivos con el comando npm y luego usar node server.js para correr
 "http://localhost:5000/api/reservas/?fecha_inicio=2024-03-01&fecha_fin=2024-12-01"
 
 - En el archivo `mock.js` se proporcionan algunos datos iniciales. Si quiere usar la API desde cero; dejar el array vacío.
+- Puedes interactuar con la api en la plataforma de `Insomnia` llenando los siguientes campos:
+email,
+hotel,
+roomType,
+checkInDate,
+checkOutDate,
+adults,
+children,
