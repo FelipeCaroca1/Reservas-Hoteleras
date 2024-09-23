@@ -1,5 +1,8 @@
 // Simular base de datos en memoria
-let bookings = [];
+
+const { mockBookings } = require("./mock");
+
+let bookings = mockBookings;
 let bookingId = 1;
 
 // Crear una nueva reserva
@@ -24,11 +27,11 @@ exports.createBooking = (req, res) => {
 // Obtener todas las reservas
 exports.getAllBookings = (req, res) => {
  const queryHotel = req.query.hotel;
- const checkInDate = req.query.fecha_inicio;
- const checkOutDate = req.query.fecha_fin;
+ const startDate = req.query.fecha_inicio ? new Date(req.query.fecha_inicio) : null;
+ const endDate = req.query.fecha_fin ? new Date(req.query.fecha_fin) : null;
  const roomType = req.query.tipo_habitacion;
  const status = req.query.estado;
- const totalGuests = req.query.num_huespedes;
+ const totalGuests = parseInt(req.query.num_huespedes, 10);
 
  let filteredBookings = bookings;
 
@@ -46,6 +49,14 @@ exports.getAllBookings = (req, res) => {
 
  if (totalGuests) {
     filteredBookings = filteredBookings.filter(booking => booking.adults + booking.children > totalGuests);
+ } 
+
+ if (startDate) {
+    filteredBookings = filteredBookings.filter(booking => new Date(booking.checkOutDate) >= startDate);
+ }
+
+ if (endDate) {
+    filteredBookings = filteredBookings.filter(booking => new Date(booking.checkInDate) <= endDate);
  } 
 
  
