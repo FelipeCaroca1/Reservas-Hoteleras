@@ -13,7 +13,8 @@ exports.createBooking = (req, res) => {
     checkInDate,
     checkOutDate,
     adults,
-    children
+    children,
+    status: 'pending'
   };
   
   bookings.push(newBooking);
@@ -23,12 +24,33 @@ exports.createBooking = (req, res) => {
 // Obtener todas las reservas
 exports.getAllBookings = (req, res) => {
  const queryHotel = req.query.hotel;
+ const checkInDate = req.query.fecha_inicio;
+ const checkOutDate = req.query.fecha_fin;
+ const roomType = req.query.tipo_habitacion;
+ const status = req.query.estado;
+ const totalGuests = req.query.num_huespedes;
+
+ let filteredBookings = bookings;
 
  if (queryHotel) {
-    res.json( bookings.filter(booking => booking.hotel === queryHotel) );
- } else {
-     res.json(bookings);
-}
+    filteredBookings = filteredBookings.filter(booking => booking.hotel === queryHotel);
+ } 
+
+ if (roomType) {
+    filteredBookings = filteredBookings.filter(booking => booking.roomType === roomType);
+ } 
+
+ if (status) {
+    filteredBookings = filteredBookings.filter(booking => booking.status === status);
+ } 
+
+ if (totalGuests) {
+    filteredBookings = filteredBookings.filter(booking => booking.adults + booking.children > totalGuests);
+ } 
+
+ 
+
+res.json(filteredBookings);
 };
 
 // Obtener una reserva por ID
